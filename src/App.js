@@ -10,9 +10,7 @@ import Reservations from './components/reservations';
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      newUserState: null
-    }
+    
   }
 
   onChangeUserSate = (newState) => {
@@ -24,8 +22,6 @@ class App extends Component {
     return (
       <Router>
         <div>
-          {this.state.newUserState !== null ?<Redirect from="/" to="/profile" />:<Login newUserState={this.state.newUserState} changeState={this.onChangeUserSate.bind(this)}/> }
-
           
           <Route exact path="/" component={Login}/>
           <Route path="/profile" component={Profile}/>
