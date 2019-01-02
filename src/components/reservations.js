@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 import { Form, Row, Col, Input, Button, Icon } from 'antd';
+import config from './config';
 import 'antd/lib/form/style/css';
 import 'antd/lib/icon/style/css';
 import 'antd/lib/input/style/css';
 import 'antd/lib/button/style/css';
 import ButtonGroup from 'antd/lib/button/button-group';
 const FormItem = Form.Item;
+
 
 
 class Reservations extends Component {
@@ -17,7 +20,7 @@ class Reservations extends Component {
       airport: "",
       destination: ""
     }
-    //this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.updateInput = this.updateInput.bind(this);
   }
 
@@ -29,15 +32,29 @@ class Reservations extends Component {
       console.log(this.state);
   }
 
-  /*handleSubmit = (e) =>{
+  handleSubmit = (e) =>{
     e.preventDefault();
+
+    const db = firebase.firestore();
+
+    db.settings({
+      timestampsInSnapshots: true
+    });
+    const dataRef = db.collection("submit").add({
+      name: this.state.name,
+      lastName: this.state.lastName,
+      airport: this.state.airport,
+      destination: this.state.airport
+
+    })
+
     this.setState({
       name: "",
       lastName: "",
       airport: "",
       destination: ""
     })
-  }*/
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -47,30 +64,30 @@ class Reservations extends Component {
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: 'Please input your name!' }],
+              rules: [{ required: true, message: 'Please input your name!' }]
             })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Name"/>
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>} placeholder="Name" onChange={this.updateInput} type="text" name="name" />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('lastName', {
               rules: [{ required: true, message: 'Please input your Last Naem!' }],
             })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Last Name" />
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Last Name" onChange={this.updateInput} name="lastName"/>
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('airport', {
               rules: [{ required: true, message: 'Please input your airport!' }],
-              onChange: (e) => this.updateInput(e)})(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Airport" />
+              })(
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Airport" onChange={this.updateInput} name="airport"/>
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('destination', {
               rules: [{ required: true, message: 'Please input your destination!' }],
             })(
-              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Destination" />
+              <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Destination" onChange={this.updateInput} name="destination"/>
             )}
           </FormItem>
 

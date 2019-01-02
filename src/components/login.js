@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Row, Col, Card} from 'antd';
+import {withRouter} from 'react-router-dom';
 import firebase from 'firebase';
 import config from './config';
 import 'antd/lib/form/style/css';
@@ -26,6 +27,7 @@ class Login extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.googleSignIn = this.googleSignIn.bind(this);
+        this.routeChange = this.routeChange.bind(this);
 
     }
 
@@ -76,6 +78,11 @@ class Login extends Component {
         this.googleSignIn();
         
       }
+
+      routeChange = () => {
+        let path = '/reservations'
+        this.props.history.push(path);
+      }
     
       render() {
         const { getFieldDecorator } = this.props.form;
@@ -89,7 +96,7 @@ class Login extends Component {
                   <Card style={{ width: 240 }} cover={<img alt="profile pic" src={this.state.user.photoURL} />}>
                     <Meta title={this.state.user.displayName}/>
                   </Card>
-                  <Button>Reserve Flight</Button>
+                  <Button onClick={this.routeChange}>Reserve Flight</Button>
                 </Col>
               </Row>
             ) : (
